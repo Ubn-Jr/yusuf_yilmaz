@@ -1,4 +1,4 @@
-//HASTANE RANDEVU SİSTEMİ
+//HASTANE MUAYENE SİSTEMİ
 
 package main
 
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-//Öğle Arası Saati ve Öğle Arası Bitimine Kalan Zamanın Tanımlandığı Fonksiyon
+// Öğle Arası Saati ve Öğle Arası Bitimine Kalan Zamanın Tanımlandığı Fonksiyon
 func main() {
 
 	var lunchBreak int = 12
@@ -19,7 +19,7 @@ func main() {
 
 }
 
-//Anlık Zamanın Öğle Arasına Denk Gelip Gelmediğini Kontrol Eden Fonksiyon
+// Anlık Zamanın Öğle Arasına Denk Gelip Gelmediğini Kontrol Eden Fonksiyon
 func checkLunchBreakTime(lunchBreak *int, date *int, dateMinute *int) {
 
 	if *date >= *lunchBreak && *date < *lunchBreak+1 {
@@ -29,7 +29,7 @@ func checkLunchBreakTime(lunchBreak *int, date *int, dateMinute *int) {
 	}
 }
 
-//Muayene Olunmak İstenen Bölümün Seçildiği ve Seçtiğimiz Bölüme Göre Rastgele Doktor Ataması Yapan Fonksiyon
+// Muayene Olunmak İstenen Bölümün Seçildiği ve Seçtiğimiz Bölüme Göre Rastgele Doktor Ataması Yapan Fonksiyon
 func hospitalAppointmentSystem() {
 
 	var pickHospitalBranch string
@@ -43,39 +43,45 @@ func hospitalAppointmentSystem() {
 	var dermatologyDoctors [5]string = [5]string{"Dr. Ali", "Dr. Fatih", "Dr. Şevval", "Dr. Hüseyin", "Dr. Ecrin"}
 	var neurologyDoctors [5]string = [5]string{"Dr. Furkan", "Dr. Abdülkadir", "Dr. Eda", "Dr. Sultan", "Dr. Ömer"}
 
-	randomDoctorAppointment := internalMedicineDoctors[rand.Intn(len(internalMedicineDoctors))]
-	randomDoctorAppointment1 := cardiologyDoctors[rand.Intn(len(cardiologyDoctors))]
-	randomDoctorAppointment2 := radiologyDoctors[rand.Intn(len(radiologyDoctors))]
-	randomDoctorAppointment3 := dermatologyDoctors[rand.Intn(len(dermatologyDoctors))]
-	randomDoctorAppointment4 := neurologyDoctors[rand.Intn(len(neurologyDoctors))]
+	var doktorlar [5]string = [5]string{
+		internalMedicineDoctors[rand.Intn(len(internalMedicineDoctors))],
+		cardiologyDoctors[rand.Intn(len(cardiologyDoctors))],
+		radiologyDoctors[rand.Intn(len(radiologyDoctors))],
+		dermatologyDoctors[rand.Intn(len(dermatologyDoctors))],
+		neurologyDoctors[rand.Intn(len(neurologyDoctors))]}
 
-	switch pickHospitalBranch {
-	case hospitalBranch[0]:
-		fmt.Println("Dahiliye Bölümü İçin Muayene Olacağınız Doktor :", randomDoctorAppointment)
-	case hospitalBranch[1]:
-		fmt.Println("Kardiyoloji Bölümü İçin Muayene Olacağınız Doktor :", randomDoctorAppointment1)
-	case hospitalBranch[2]:
-		fmt.Println("Radyoloji Bölümü İçin Muayene Olacağınız Doktor :", randomDoctorAppointment2)
-	case hospitalBranch[3]:
-		fmt.Println("Cildiye Bölümü İçin Muayene Olacağınız Doktor :", randomDoctorAppointment3)
-	case hospitalBranch[4]:
-		fmt.Println("Nöroloji Bölümü İçin Muayene Olacağınız Doktor :", randomDoctorAppointment4)
-	default:
-		fmt.Println("Hatalı Bölüm Adı Girdiniz. Lütfen Bölüm Adını Doğru Girdiğinizden Emin Olun")
+	var indexEnd = len(doktorlar) - 1
+	for i := 0; i < len(hospitalBranch); i++ {
+
+		switch {
+
+		case hospitalBranch[i] == pickHospitalBranch:
+
+			fmt.Println(pickHospitalBranch, "Bölümü İçin Muayene Olacağınız Doktor :", doktorlar[i])
+			indexEnd = len(doktorlar[i])
+		}
+		switch {
+
+		case i == indexEnd:
+			if hospitalBranch[i] != pickHospitalBranch {
+				fmt.Println("Hatalı Bölüm Adı Girdiniz. Lütfen Bölüm Adını Doğru Girdiğinizden Emin Olun")
+			}
+		}
+
 	}
 
 }
 
-//Randevumuzun Olup Olmadığını Soran Fonksiyon
+// Randevumuzun Olup Olmadığını Soran Fonksiyon
 func checkAppointment() {
 
 	var haveAppointment string
 	fmt.Println("Randevunuz Var mı?")
 	fmt.Scan(&haveAppointment)
 	switch haveAppointment {
-	case "Evet":
+	case "E":
 		fmt.Println("Randevu Saatinizde Doktorunuzun Yanına Gidebilirsiniz.")
-	case "Hayır":
+	case "H":
 		hospitalAppointmentSystem()
 	}
 }
